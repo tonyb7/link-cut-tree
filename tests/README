@@ -1,0 +1,6 @@
+Format of test cases:
+The first line contains an integer n, the number of vertices in the graph.
+Vertex 0 is the source, and vertex n-1 is the target of the flow network.
+The next n lines describe the edges. Each line contains three integers, 
+u, v, c, denoting a directed edge from vertex u to vertex v with flow
+capacity c.
