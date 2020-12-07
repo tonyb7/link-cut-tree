@@ -1,0 +1,126 @@
+******** INITIAL NETWORK STATE: ********
+Total Flow: 0
+The edge from 0 to 1 has 0/10 units of flow
+The edge from 1 to 0 has 0/0 units of flow
+The edge from 0 to 2 has 0/8 units of flow
+The edge from 2 to 0 has 0/0 units of flow
+The edge from 1 to 4 has 0/0 units of flow
+The edge from 4 to 1 has 0/0 units of flow
+The edge from 1 to 3 has 0/15 units of flow
+The edge from 3 to 1 has 0/0 units of flow
+The edge from 2 to 3 has 0/2 units of flow
+The edge from 3 to 2 has 0/0 units of flow
+The edge from 2 to 5 has 0/6 units of flow
+The edge from 5 to 2 has 0/0 units of flow
+The edge from 3 to 4 has 0/4 units of flow
+The edge from 4 to 3 has 0/0 units of flow
+The edge from 3 to 5 has 0/10 units of flow
+The edge from 5 to 3 has 0/0 units of flow
+The edge from 4 to 6 has 0/5 units of flow
+The edge from 6 to 4 has 0/0 units of flow
+The edge from 5 to 6 has 0/11 units of flow
+The edge from 6 to 5 has 0/0 units of flow
+
+******** ITERATION 1 ********
+Printing the Level Graph: 
+0 
+2 1 
+3 5 
+4 6 
+The target node (6) is in the level graph
+
+Adding 6 units of flow to (5, 6)
+Adding 6 units of flow to (2, 5)
+Adding 6 units of flow to (0, 2)
+
+Network state after finding a blocking flow
+Total Flow: 6
+The edge from 0 to 1 has 0/10 units of flow
+The edge from 1 to 0 has 0/0 units of flow
+The edge from 0 to 2 has 6/8 units of flow
+The edge from 2 to 0 has -6/0 units of flow
+The edge from 1 to 4 has 0/0 units of flow
+The edge from 4 to 1 has 0/0 units of flow
+The edge from 1 to 3 has 0/15 units of flow
+The edge from 3 to 1 has 0/0 units of flow
+The edge from 2 to 3 has 0/2 units of flow
+The edge from 3 to 2 has 0/0 units of flow
+The edge from 2 to 5 has 6/6 units of flow
+The edge from 5 to 2 has -6/0 units of flow
+The edge from 3 to 4 has 0/4 units of flow
+The edge from 4 to 3 has 0/0 units of flow
+The edge from 3 to 5 has 0/10 units of flow
+The edge from 5 to 3 has 0/0 units of flow
+The edge from 4 to 6 has 0/5 units of flow
+The edge from 6 to 4 has 0/0 units of flow
+The edge from 5 to 6 has 6/11 units of flow
+The edge from 6 to 5 has -6/0 units of flow
+
+******** ITERATION 2 ********
+Printing the Level Graph: 
+0 
+2 1 
+3 
+5 4 
+6 
+The target node (6) is in the level graph
+
+Adding 2 units of flow to (5, 6)
+Adding 2 units of flow to (3, 5)
+Adding 2 units of flow to (2, 3)
+Adding 2 units of flow to (0, 2)
+Adding 3 units of flow to (5, 6)
+Adding 3 units of flow to (3, 5)
+Adding 3 units of flow to (1, 3)
+Adding 3 units of flow to (0, 1)
+Adding 4 units of flow to (4, 6)
+Adding 4 units of flow to (3, 4)
+Adding 4 units of flow to (1, 3)
+Adding 4 units of flow to (0, 1)
+
+Network state after finding a blocking flow
+Total Flow: 15
+The edge from 0 to 1 has 7/10 units of flow
+The edge from 1 to 0 has -7/0 units of flow
+The edge from 0 to 2 has 8/8 units of flow
+The edge from 2 to 0 has -8/0 units of flow
+The edge from 1 to 4 has 0/0 units of flow
+The edge from 4 to 1 has 0/0 units of flow
+The edge from 1 to 3 has 7/15 units of flow
+The edge from 3 to 1 has -7/0 units of flow
+The edge from 2 to 3 has 2/2 units of flow
+The edge from 3 to 2 has -2/0 units of flow
+The edge from 2 to 5 has 6/6 units of flow
+The edge from 5 to 2 has -6/0 units of flow
+The edge from 3 to 4 has 4/4 units of flow
+The edge from 4 to 3 has -4/0 units of flow
+The edge from 3 to 5 has 5/10 units of flow
+The edge from 5 to 3 has -5/0 units of flow
+The edge from 4 to 6 has 4/5 units of flow
+The edge from 6 to 4 has -4/0 units of flow
+The edge from 5 to 6 has 11/11 units of flow
+The edge from 6 to 5 has -11/0 units of flow
+
+******** MAXIMUM FLOW RETURNED: ********
+Total Flow: 15
+The edge from 0 to 1 has 7/10 units of flow
+The edge from 1 to 0 has -7/0 units of flow
+The edge from 0 to 2 has 8/8 units of flow
+The edge from 2 to 0 has -8/0 units of flow
+The edge from 1 to 4 has 0/0 units of flow
+The edge from 4 to 1 has 0/0 units of flow
+The edge from 1 to 3 has 7/15 units of flow
+The edge from 3 to 1 has -7/0 units of flow
+The edge from 2 to 3 has 2/2 units of flow
+The edge from 3 to 2 has -2/0 units of flow
+The edge from 2 to 5 has 6/6 units of flow
+The edge from 5 to 2 has -6/0 units of flow
+The edge from 3 to 4 has 4/4 units of flow
+The edge from 4 to 3 has -4/0 units of flow
+The edge from 3 to 5 has 5/10 units of flow
+The edge from 5 to 3 has -5/0 units of flow
+The edge from 4 to 6 has 4/5 units of flow
+The edge from 6 to 4 has -4/0 units of flow
+The edge from 5 to 6 has 11/11 units of flow
+The edge from 6 to 5 has -11/0 units of flow
+

@@ -30,8 +30,7 @@ int main()
         // and add it to the total flow.
         graph.addBlockingFlow();
 
-        cout << endl;
-        cout << "Network state after finding a blocking flow" << endl;
+        cout << "\nNetwork state after finding a blocking flow" << endl;
         graph.printFlow();
         graph.resetLevelGraph();
     }
@@ -39,13 +38,4 @@ int main()
     cout << "******** MAXIMUM FLOW RETURNED: ********" << endl;
     graph.printFlow();
 }
-
-/* 
-Difficulties: 
-    Graph representation
-    Level graph rep/gen
-    Dynamic/local memory
-    Assumed w->parent was its path parent (nope) -- path parent is the
-    in-order predecessor 
-*/
 
