@@ -44,5 +44,8 @@ int main()
 Difficulties: 
     Graph representation
     Level graph rep/gen
+    Dynamic/local memory
+    Assumed w->parent was its path parent (nope) -- path parent is the
+    in-order predecessor 
 */
 
