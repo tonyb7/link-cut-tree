@@ -23,9 +23,16 @@ public:
         Creates level graph representation of the current graph from scratch.
         Edge tracks its residual capacity so all the information needed for 
         generating the level graph exists already. 
+        
+        Returns a boolean specifying whether a path to the target was found.
     */
-    void generateLevelGraph();
-    void printLevelGraph();
+    bool generateLevelGraph();
+
+    /*
+        Functions to print the state of Graph. 
+    */
+    void printLevelGraph() const;
+    void printFlow() const;
 
 private:
     int vertices;

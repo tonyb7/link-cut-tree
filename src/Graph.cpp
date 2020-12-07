@@ -28,7 +28,7 @@ void Graph::addEdge(int u, int v, int capacity)
     adj[v].push_back(reverse_edge_index);
 }
 
-void Graph::generateLevelGraph() 
+bool Graph::generateLevelGraph() 
 {
     assert(vertex_to_level_node.empty());
 
@@ -75,10 +75,11 @@ void Graph::generateLevelGraph()
         }
     }
 
+    return vertex_to_level_node.count(target);
 }
 
-void Graph::printLevelGraph() {
-    
+void Graph::printLevelGraph() const
+{
     int level = 0;
 
     queue<int> bfs_q;
@@ -89,7 +90,7 @@ void Graph::printLevelGraph() {
         int curr = bfs_q.front();
         bfs_q.pop();
 
-        shared_ptr<LevelGraphNode> v = vertex_to_level_node[curr];
+        shared_ptr<LevelGraphNode> v = vertex_to_level_node.at(curr);
         if (v->level > level) {
             level = v->level;
             cout << endl;
@@ -110,5 +111,23 @@ void Graph::printLevelGraph() {
         cout << "The target node (" << target << ") is not in the level graph" << endl;
     }
 
+}
+
+void Graph::printFlow() const
+{
+    int flow = 0;
+    vector<int> source_edges = adj.at(source);
+    for (int e : source_edges) {
+        flow += edges.at(e).flow;
+    }
+    cout << "Total Flow: " << flow << endl;
+
+    for (const Edge& edge : edges) {
+        cout << "The edge from " << edge.u 
+             << " to "           << edge.v 
+             << " has "          << edge.flow  << "/" << edge.capacity 
+             << " units of flow" << endl;
+    }
+    cout << endl;
 }
 

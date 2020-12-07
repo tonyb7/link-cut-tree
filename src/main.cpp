@@ -18,8 +18,13 @@ int main()
         graph.addEdge(u, v, cap);
     }
 
-    graph.generateLevelGraph();
-    graph.printLevelGraph();
+    // while (graph.generateLevelGraph()) {
+    //     graph.printLevelGraph();
+
+    // }
+
+    cout << "******** MAXIMUM FLOW RETURNED: ********" << endl;
+    graph.printFlow();
 }
 
 /* 
