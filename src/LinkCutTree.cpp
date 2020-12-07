@@ -3,27 +3,36 @@
 
 namespace LinkCutTree {
 
-std::shared_ptr<TreeNode> root(std::shared_ptr<TreeNode> v)
+/* 
+    Helper function for link-cut tree operations. Make the root-to-v path
+    preferred, and make v the root of its auxiliary tree.
+*/
+void access(TreeNode* v) 
+{
+
+}
+
+TreeNode* root(TreeNode* v)
 {
     return v;
 }
 
-std::shared_ptr<TreeNode> link(std::shared_ptr<TreeNode> v, std::shared_ptr<TreeNode> w, int c)
+TreeNode* link(TreeNode* v, TreeNode* w, int c)
 {
     return v;
 }
 
-int cut(std::shared_ptr<TreeNode> v)
+int cut(TreeNode* v)
 {
     return 0;
 }
 
-std::shared_ptr<TreeNode> mincost(std::shared_ptr<TreeNode> v)
+TreeNode* mincost(TreeNode* v)
 {
     return v;
 }
 
-void update(std::shared_ptr<TreeNode> v, int x)
+void update(TreeNode* v, int x)
 {
     return;
 }

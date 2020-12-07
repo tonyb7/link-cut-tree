@@ -4,6 +4,7 @@
 #include "LinkCutTree.h"
 
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 #include <memory>
 
@@ -66,14 +67,18 @@ private:
     };
     std::vector<Edge> edges;
 
-    // vertex number -> edge index of outgoing edges
-    std::unordered_map<int, std::vector<int>> adj; 
+    // u -> v -> edge index
+    std::unordered_map<int, std::unordered_map<int, int>> adj;
     
     // Level graph representation
     struct LevelGraphNode {
+        LevelGraphNode() : level(-1) {} // default should be overwritten
+        LevelGraphNode(int level_, int vertex_) : level(level_), node(vertex_) {}
+
         int level;
-        std::vector<int> outgoing_edges;
         LinkCutTree::TreeNode node;
+        std::unordered_set<int> outgoing_vertices;
+        std::unordered_set<int> incoming_vertices;
     };
     std::unordered_map<int, std::shared_ptr<LevelGraphNode>> vertex_to_level_node;
 

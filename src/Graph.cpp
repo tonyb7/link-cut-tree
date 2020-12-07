@@ -10,6 +10,7 @@ using std::cin;
 using std::cout; using std::endl;
 using std::queue;
 using std::unordered_map;
+using std::unordered_set;
 using std::vector;
 using std::shared_ptr; using std::make_shared;
 
@@ -24,16 +25,15 @@ void Graph::addEdge(int u, int v, int capacity)
     edges.push_back(forward);
     edges.push_back(reverse);
 
-    adj[u].push_back(forward_edge_index);
-    adj[v].push_back(reverse_edge_index);
+    adj[u][v] = forward_edge_index;
+    adj[v][u] = reverse_edge_index;
 }
 
 bool Graph::generateLevelGraph() 
 {
     assert(vertex_to_level_node.empty());
 
-    shared_ptr<LevelGraphNode> s = make_shared<LevelGraphNode>();
-    s->level = 0;
+    shared_ptr<LevelGraphNode> s = make_shared<LevelGraphNode>(0, source);
     vertex_to_level_node[source] = s;
 
     queue<int> bfs_q;
@@ -48,10 +48,10 @@ bool Graph::generateLevelGraph()
 
         shared_ptr<LevelGraphNode> current_node = level_it->second;
 
-        vector<int> outgoing_edges = adj[current_vertex];
-        for (int e : outgoing_edges) {
-
-            Edge outgoing_edge = edges[e];
+        unordered_map<int, int> outgoing_edges = adj[current_vertex];
+        for (auto e_it = outgoing_edges.begin(); e_it != outgoing_edges.end(); ++e_it) {
+            
+            Edge outgoing_edge = edges[e_it->second];
             if (outgoing_edge.residual == 0) {
                 // edge isn't in residual graph, so edge won't be in level graph
                 continue;
@@ -62,13 +62,17 @@ bool Graph::generateLevelGraph()
             
             if (v) {
                 // already visited
+                if (v->level == current_node->level + 1) {
+                    current_node->outgoing_vertices.insert(v->node.vertex);
+                    v->incoming_vertices.insert(current_vertex);
+                }
                 continue;
             }
             else {
-                v = make_shared<LevelGraphNode>();
-                v->level = current_node->level + 1;
+                v = make_shared<LevelGraphNode>(current_node->level + 1, next_vertex);
+                v->incoming_vertices.insert(current_vertex);
 
-                current_node->outgoing_edges.push_back(next_vertex);
+                current_node->outgoing_vertices.insert(next_vertex);
                 bfs_q.push(next_vertex);
             }
 
@@ -80,7 +84,72 @@ bool Graph::generateLevelGraph()
 
 void Graph::addBlockingFlow() 
 {
-    // TODO
+    using LinkCutTree::TreeNode;
+
+    TreeNode s = vertex_to_level_node[source]->node;
+
+    while (true) {
+        TreeNode* r = LinkCutTree::root(&s);
+
+        if (r->vertex == target) {
+            // found a path from source to target
+            bool firstTime = true;
+            while (true) {
+                TreeNode * w = LinkCutTree::mincost(&s); // find the mincost along this path
+
+                assert(w->parent);
+                int edge_idx = adj.at(w->vertex).at(w->parent->vertex);
+                const Edge& e = edges.at(edge_idx);
+                int cost = e.residual;
+
+                if (firstTime) {
+                    firstTime = false;
+                    LinkCutTree::update(&s, 0 - cost); // add mincost to blocking flow
+                    cost = 0;
+                }
+
+                if (cost != 0) {
+                    assert(cost > 0);
+                    break;
+                }
+                else {
+                    // delete all edges that acquired cost==0
+                    LinkCutTree::cut(w);
+                    vertex_to_level_node[e.u]->outgoing_vertices.erase(e.v);
+                    vertex_to_level_node[e.v]->incoming_vertices.erase(e.u);
+                }
+            }
+        }
+        else {
+            shared_ptr<LevelGraphNode> rnode = vertex_to_level_node.at(r->vertex);
+            if (rnode->outgoing_vertices.empty()) {
+                if (r->vertex == source) {
+                    // a blocking flow has been found
+                    break;
+                }
+                else {
+                    // dead end; cut all incoming edges
+                    for (int u : rnode->incoming_vertices) {
+                        shared_ptr<LevelGraphNode> prev_node = vertex_to_level_node.at(u);
+
+                        LinkCutTree::cut(&prev_node->node);
+                        prev_node->outgoing_vertices.erase(r->vertex);
+                    }
+                    rnode->incoming_vertices.clear();
+                }
+            }
+            else {
+                // There exists an outgoing edge, so select one and link it
+                int outgoing_vertex = *rnode->outgoing_vertices.begin();
+                const Edge& e = edges.at(adj.at(r->vertex).at(outgoing_vertex));
+                TreeNode outgoing_node = vertex_to_level_node.at(outgoing_vertex)->node;
+                
+                LinkCutTree::link(r, &outgoing_node, e.residual);
+            }
+        }
+
+    }
+
 }
 
 void Graph::printLevelGraph() const
@@ -91,6 +160,8 @@ void Graph::printLevelGraph() const
     bfs_q.push(source);
 
     cout << "Printing the Level Graph: " << endl;
+    unordered_set<int> seen;
+
     while (!bfs_q.empty()) {
         int curr = bfs_q.front();
         bfs_q.pop();
@@ -101,9 +172,13 @@ void Graph::printLevelGraph() const
             cout << endl;
         }
 
-        cout << curr << " ";
+        // Returns pair (iter, whether insertion happened)
+        auto s_pair = seen.emplace(curr);
+        if (s_pair.second) {
+            cout << curr << " ";
+        }
 
-        for (int e : v->outgoing_edges) {
+        for (int e : v->outgoing_vertices) {
             bfs_q.push(e);
         }
     }
@@ -122,10 +197,11 @@ void Graph::printLevelGraph() const
 void Graph::printFlow() const
 {
     int flow = 0;
-    vector<int> source_edges = adj.at(source);
-    for (int e : source_edges) {
-        flow += edges.at(e).flow;
+    unordered_map<int, int> source_edges = adj.at(source);
+    for (auto e_it = source_edges.begin(); e_it != source_edges.end(); ++e_it) {
+        flow += edges.at(e_it->second).flow;
     }
+
     cout << "Total Flow: " << flow << endl;
 
     for (const Edge& edge : edges) {
