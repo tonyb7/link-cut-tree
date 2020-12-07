@@ -26,7 +26,7 @@ namespace LinkCutTree {
         Make w the parent of v. Assumes v is a tree root (but not necessarily w), 
         and that v and w are in different trees.
     */
-    TreeNode* link(TreeNode* v, TreeNode* w, int c);
+    void link(TreeNode* v, TreeNode* w, int c);
 
     /*
         Delete the edge (v, parent(v)), dividing the tree containing v into two trees. 
