@@ -46,26 +46,51 @@ void access(TreeNode* v)
 
 TreeNode* root(TreeNode* v)
 {
-    return v;
+    access(v);
+
+    // Root is the leftmost node of the auxiliary tree
+    TreeNode* root = v;
+    while (root->left) {
+        root = root->left;
+    }
+    
+    splay(root);
+
+    return root;
 }
 
 TreeNode* link(TreeNode* v, TreeNode* w, int c)
 {
-    return v;
+    access(v);
+    access(w);
+
+    // v is right below w in the represented tree
+    v->left = w;
+    w->parent = v;
 }
 
-int cut(TreeNode* v)
+void cut(TreeNode* v)
 {
-    return 0;
+    access(v);
+
+    // Separate v and its parent into two trees
+    v->left->parent = nullptr;
+    v->left = nullptr;
 }
 
 TreeNode* mincost(TreeNode* v)
 {
+    access(v);
+
+    // TODO
     return v;
 }
 
 void update(TreeNode* v, int x)
 {
+    access(v);
+    
+    // TODO
     return;
 }
 

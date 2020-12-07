@@ -30,9 +30,9 @@ namespace LinkCutTree {
 
     /*
         Delete the edge (v, parent(v)), dividing the tree containing v into two trees. 
-        Assumes v is not a tree root. Return the cost of the deleted edge.
+        Assumes v is not a tree root. (Do not return the cost of the deleted edge...)
     */
-    int cut(TreeNode* v);
+    void cut(TreeNode* v);
 
     /*
         Return the vertex w closest to root(v) such that cost(w, parent(w)) is 
