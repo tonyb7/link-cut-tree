@@ -78,7 +78,7 @@ bool Graph::generateLevelGraph()
     return vertex_to_level_node.count(target);
 }
 
-void Graph::findBlockingFlow() 
+void Graph::addBlockingFlow() 
 {
     // TODO
 }

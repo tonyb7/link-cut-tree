@@ -26,8 +26,9 @@ int main()
         cout << "******** ITERATION " << ++iterations << " ********" << endl;
         graph.printLevelGraph();
 
-        // the man in the house
-        graph.findBlockingFlow();
+        // Find a blocking flow in the level graph using dynamic link-cut trees
+        // and add it to the total flow.
+        graph.addBlockingFlow();
 
         cout << "Network state after finding a blocking flow" << endl;
         graph.printFlow();

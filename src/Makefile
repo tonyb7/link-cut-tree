@@ -1,6 +1,6 @@
 
 all:
-	g++ -std=c++17 main.cpp Graph.cpp
+	g++ -std=c++17 main.cpp Graph.cpp LinkCutTree.cpp
 
 test:
 	make all

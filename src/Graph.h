@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include "LinkCutTree.h"
+
 #include <unordered_map>
 #include <vector>
 #include <memory>
@@ -36,8 +38,9 @@ public:
 
     /* 
         Find a blocking flow in the level graph using the link-cut tree implementation.
+        Add the blocking flow to the graph's total flow.
     */
-    void findBlockingFlow();
+    void addBlockingFlow();
 
     /*
         Functions to print the state of Graph. 
@@ -65,22 +68,12 @@ private:
 
     // vertex number -> edge index of outgoing edges
     std::unordered_map<int, std::vector<int>> adj; 
-
-    // Link-cut tree node
-    struct TreeNode {
-        TreeNode() : parent(nullptr), left(nullptr), right(nullptr), pathparent(nullptr) 
-        {}
-        TreeNode* parent;
-        TreeNode* left;
-        TreeNode* right;
-        TreeNode* pathparent;
-    };
     
     // Level graph representation
     struct LevelGraphNode {
         int level;
         std::vector<int> outgoing_edges;
-        TreeNode node;
+        LinkCutTree::TreeNode node;
     };
     std::unordered_map<int, std::shared_ptr<LevelGraphNode>> vertex_to_level_node;
 
