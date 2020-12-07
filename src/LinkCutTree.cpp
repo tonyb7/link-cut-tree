@@ -8,6 +8,7 @@
 #include <cassert>
 
 using std::vector;
+using std::shared_ptr;
 
 // Adapted from source: https://www.youtube.com/watch?v=XZLN6NxEQWo
 namespace LinkCutTree {
@@ -15,13 +16,13 @@ namespace LinkCutTree {
 /* 
     Traverse a tree rooted a v in order, and storing the path in vertices.
 */
-void traverseInOrder(TreeNode* v, vector<TreeNode*>& vertices);
+void traverseInOrder(std::shared_ptr<TreeNode> v, vector<std::shared_ptr<TreeNode>>& vertices);
 
 /* 
     Helper function for link-cut tree operations. Make the root-to-v path
     preferred, and make v the root of its auxiliary tree.
 */
-void access(TreeNode* v) 
+void access(std::shared_ptr<TreeNode> v) 
 {
     // Make v the root of its auxiliary tree
     Splay::splay(v);
@@ -34,7 +35,7 @@ void access(TreeNode* v)
     }
 
     while (v->pathparent) {
-        TreeNode * w = v->pathparent;
+        shared_ptr<TreeNode> w = v->pathparent;
 
         // Move v's pathparent up to the top of its auxiliary tree
         Splay::splay(w);
@@ -53,12 +54,12 @@ void access(TreeNode* v)
     }
 }
 
-TreeNode* root(TreeNode* v)
+std::shared_ptr<TreeNode> root(std::shared_ptr<TreeNode> v)
 {
     access(v);
 
     // Root is the leftmost node of the auxiliary tree
-    TreeNode* root = v;
+    std::shared_ptr<TreeNode> root = v;
     while (root->left) {
         assert(root != root->left);
         root = root->left;
@@ -69,7 +70,7 @@ TreeNode* root(TreeNode* v)
     return root;
 }
 
-void link(TreeNode* v, TreeNode* w, int c)
+void link(std::shared_ptr<TreeNode> v, std::shared_ptr<TreeNode> w, int c)
 {
     access(v);
     access(w);
@@ -80,7 +81,7 @@ void link(TreeNode* v, TreeNode* w, int c)
     w->parent = v;
 }
 
-void cut(TreeNode* v)
+void cut(std::shared_ptr<TreeNode> v)
 {
     access(v);
 
@@ -91,19 +92,19 @@ void cut(TreeNode* v)
     v->left = nullptr;
 }
 
-TreeNode* mincost(TreeNode* v, Graph* graph)
+std::shared_ptr<TreeNode> mincost(std::shared_ptr<TreeNode> v, Graph* graph)
 {
     access(v);
 
-    vector<TreeNode*> root_to_v;
+    vector<shared_ptr<TreeNode>> root_to_v;
     traverseInOrder(v->left, root_to_v);
     root_to_v.push_back(v);
 
-    TreeNode* minNode = nullptr;
+    shared_ptr<TreeNode> minNode = nullptr;
     int minCost = INT_MAX;
     for (int i = 1; i < (int)root_to_v.size(); ++i) {
-        TreeNode* curr = root_to_v[i];
-        TreeNode* parent = root_to_v[i-1];
+        shared_ptr<TreeNode> curr = root_to_v[i];
+        shared_ptr<TreeNode> parent = root_to_v[i-1];
 
         int cost = graph->getResidual(curr->vertex, parent->vertex);
         if (cost < minCost) {
@@ -115,17 +116,17 @@ TreeNode* mincost(TreeNode* v, Graph* graph)
     return minNode;
 }
 
-void update(TreeNode* v, int x, Graph* graph)
+void update(std::shared_ptr<TreeNode> v, int x, Graph* graph)
 {
     access(v);
     
-    vector<TreeNode*> root_to_v;
+    vector<shared_ptr<TreeNode>> root_to_v;
     traverseInOrder(v->left, root_to_v);
     root_to_v.push_back(v);
 
     for (int i = 1; i < (int)root_to_v.size(); ++i) {
-        TreeNode* curr = root_to_v[i];
-        TreeNode* parent = root_to_v[i-1];
+        shared_ptr<TreeNode> curr = root_to_v[i];
+        shared_ptr<TreeNode> parent = root_to_v[i-1];
 
         graph->addFlow(curr->vertex, parent->vertex, 0 - x);
     }
@@ -133,7 +134,7 @@ void update(TreeNode* v, int x, Graph* graph)
     return;
 }
 
-void traverseInOrder(TreeNode* v, vector<TreeNode*>& vertices)
+void traverseInOrder(std::shared_ptr<TreeNode> v, vector<std::shared_ptr<TreeNode>>& vertices)
 {
     if (!v) {
         return;

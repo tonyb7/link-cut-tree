@@ -84,10 +84,12 @@ private:
     // Level graph representation
     struct LevelGraphNode {
         LevelGraphNode() : level(-1) {} // default should be overwritten
-        LevelGraphNode(int level_, int vertex_) : level(level_), node(vertex_) {}
+        LevelGraphNode(int level_, int vertex_) : level(level_) {
+            node = std::make_shared<LinkCutTree::TreeNode>(vertex_);
+        }
 
         int level;
-        LinkCutTree::TreeNode node;
+        std::shared_ptr<LinkCutTree::TreeNode> node;
         std::unordered_set<int> outgoing_vertices;
         std::unordered_set<int> incoming_vertices;
     };

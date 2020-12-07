@@ -2,17 +2,16 @@
 #include "Splay.h"
 #include <cassert>
 
-#include <iostream>
+// #include <iostream>
 
 // Adapted from source: https://en.wikipedia.org/wiki/Splay_tree
 namespace Splay {
 
-void splay(LinkCutTree::TreeNode* v)
+void splay(std::shared_ptr<LinkCutTree::TreeNode> v)
 {
     while (v->parent) {
         if (!v->parent->parent) {
             // zig
-            std::cout << "zig" << std::endl;
             if (v->parent->left == v) {
                 rotateRight(v->parent);
             }
@@ -44,9 +43,9 @@ void splay(LinkCutTree::TreeNode* v)
     }
 }
 
-void rotateLeft(LinkCutTree::TreeNode* p)
+void rotateLeft(std::shared_ptr<LinkCutTree::TreeNode> p)
 {
-    LinkCutTree::TreeNode* v = p->right;
+    std::shared_ptr<LinkCutTree::TreeNode> v = p->right;
     if (v) {
         p->right = v->left;
         if (v->left) {
@@ -72,9 +71,9 @@ void rotateLeft(LinkCutTree::TreeNode* p)
     p->parent = v;
 }
 
-void rotateRight(LinkCutTree::TreeNode* p)
+void rotateRight(std::shared_ptr<LinkCutTree::TreeNode> p)
 {
-    LinkCutTree::TreeNode* v = p->left;
+    std::shared_ptr<LinkCutTree::TreeNode> v = p->left;
     if (v) {
         p->left = v->right;
         if (v->right) {

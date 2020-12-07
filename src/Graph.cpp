@@ -63,7 +63,7 @@ bool Graph::generateLevelGraph()
             if (v) {
                 // already visited
                 if (v->level == current_node->level + 1) {
-                    current_node->outgoing_vertices.insert(v->node.vertex);
+                    current_node->outgoing_vertices.insert(v->node->vertex);
                     v->incoming_vertices.insert(current_vertex);
                 }
                 continue;
@@ -88,16 +88,16 @@ void Graph::addBlockingFlow()
 {
     using LinkCutTree::TreeNode;
 
-    TreeNode s = vertex_to_level_node[source]->node;
+    shared_ptr<TreeNode> s = vertex_to_level_node[source]->node;
 
     while (true) {
-        TreeNode* r = LinkCutTree::root(&s);
+        shared_ptr<TreeNode> r = LinkCutTree::root(s);
 
         if (r->vertex == target) {
             // found a path from source to target
             bool firstTime = true;
             while (true) {
-                TreeNode * w = LinkCutTree::mincost(&s, this); // find the mincost along this path
+                shared_ptr<TreeNode> w = LinkCutTree::mincost(s, this); // find the mincost along this path
 
                 assert(w->parent);
                 int edge_idx = adj.at(w->vertex).at(w->parent->vertex);
@@ -106,7 +106,7 @@ void Graph::addBlockingFlow()
 
                 if (firstTime) {
                     firstTime = false;
-                    LinkCutTree::update(&s, 0 - cost, this); // add mincost to blocking flow
+                    LinkCutTree::update(s, 0 - cost, this); // add mincost to blocking flow
                     cost = 0;
                 }
 
@@ -134,7 +134,7 @@ void Graph::addBlockingFlow()
                     for (int u : rnode->incoming_vertices) {
                         shared_ptr<LevelGraphNode> prev_node = vertex_to_level_node.at(u);
 
-                        LinkCutTree::cut(&prev_node->node);
+                        LinkCutTree::cut(prev_node->node);
                         prev_node->outgoing_vertices.erase(r->vertex);
                     }
                     rnode->incoming_vertices.clear();
@@ -144,9 +144,9 @@ void Graph::addBlockingFlow()
                 // There exists an outgoing edge, so select one and link it
                 int outgoing_vertex = *rnode->outgoing_vertices.begin();
                 const Edge& e = edges.at(adj.at(r->vertex).at(outgoing_vertex));
-                TreeNode outgoing_node = vertex_to_level_node.at(outgoing_vertex)->node;
+                shared_ptr<TreeNode> outgoing_node = vertex_to_level_node.at(outgoing_vertex)->node;
                 
-                LinkCutTree::link(r, &outgoing_node, e.residual);
+                LinkCutTree::link(r, outgoing_node, e.residual);
             }
         }
 
@@ -164,8 +164,8 @@ void Graph::addFlow(int u, int v, int c)
     edge.flow += c;
     redge.flow -= c;
 
-    assert(edge.flow < edge.capacity);
-    assert(redge.flow < redge.capacity);
+    assert(edge.flow <= edge.capacity);
+    assert(redge.flow <= redge.capacity);
 
     edge.residual = edge.capacity - edge.flow;
     redge.residual = redge.capacity - redge.flow;

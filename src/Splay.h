@@ -2,6 +2,7 @@
 #pragma once
 
 #include "LinkCutTree.h"
+#include <memory>
 
 namespace Splay {
 
@@ -9,16 +10,16 @@ namespace Splay {
         Splay node v within its auxiliary tree (which is a splay tree).
         Ensures that the pathparent pointer is moved to the root/splayed node.
     */
-    void splay(LinkCutTree::TreeNode* v);
+    void splay(std::shared_ptr<LinkCutTree::TreeNode> v);
 
     /*
         Rotate right operation used by splay.
     */
-    void rotateLeft(LinkCutTree::TreeNode* p);
+    void rotateLeft(std::shared_ptr<LinkCutTree::TreeNode>  p);
 
     /* 
         Rotate left operation used by splay.
     */
-    void rotateRight(LinkCutTree::TreeNode* p);
+    void rotateRight(std::shared_ptr<LinkCutTree::TreeNode> p);
 }
 
