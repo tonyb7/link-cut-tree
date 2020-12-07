@@ -1,9 +1,9 @@
 
 all:
-	g++ -std=c++17 main.cpp
+	g++ -std=c++17 main.cpp Graph.cpp
 
 test:
-	make clean && make all
+	make all
 	./a.out < ../tests/test0
 
 clean:
