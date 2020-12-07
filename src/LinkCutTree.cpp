@@ -5,9 +5,11 @@
 
 #include <vector>
 #include <climits>
+#include <cassert>
 
 using std::vector;
 
+// Adapted from source: https://www.youtube.com/watch?v=XZLN6NxEQWo
 namespace LinkCutTree {
 
 /* 
@@ -25,9 +27,11 @@ void access(TreeNode* v)
     Splay::splay(v);
     
     // Remove v's preferred child since v itself is most recently accessed now.
-    v->right->pathparent = v;
-    v->right->parent = nullptr;
-    v->right = nullptr;
+    if (v->right) {
+        v->right->pathparent = v;
+        v->right->parent = nullptr;
+        v->right = nullptr;
+    }
 
     while (v->pathparent) {
         TreeNode * w = v->pathparent;
@@ -36,8 +40,10 @@ void access(TreeNode* v)
         Splay::splay(w);
 
         // Switch w's preferred child
-        w->right->pathparent = w;
-        w->right->parent = nullptr;
+        if (w->right) {
+            w->right->pathparent = w;
+            w->right->parent = nullptr;
+        }
         w->right = v;
         v->parent = w;
         v->pathparent = nullptr;
@@ -54,6 +60,7 @@ TreeNode* root(TreeNode* v)
     // Root is the leftmost node of the auxiliary tree
     TreeNode* root = v;
     while (root->left) {
+        assert(root != root->left);
         root = root->left;
     }
     
@@ -67,6 +74,7 @@ void link(TreeNode* v, TreeNode* w, int c)
     access(v);
     access(w);
 
+    assert(v != w);
     // v is right below w in the represented tree
     v->left = w;
     w->parent = v;
@@ -77,7 +85,9 @@ void cut(TreeNode* v)
     access(v);
 
     // Separate v and its parent into two trees
-    v->left->parent = nullptr;
+    if (v->left) {
+        v->left->parent = nullptr;
+    }
     v->left = nullptr;
 }
 

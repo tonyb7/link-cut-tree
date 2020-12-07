@@ -2,6 +2,8 @@
 #include "Splay.h"
 #include <cassert>
 
+#include <iostream>
+
 // Adapted from source: https://en.wikipedia.org/wiki/Splay_tree
 namespace Splay {
 
@@ -10,6 +12,7 @@ void splay(LinkCutTree::TreeNode* v)
     while (v->parent) {
         if (!v->parent->parent) {
             // zig
+            std::cout << "zig" << std::endl;
             if (v->parent->left == v) {
                 rotateRight(v->parent);
             }
@@ -34,7 +37,7 @@ void splay(LinkCutTree::TreeNode* v)
         }
         else {
             // zig zag
-            assert(v->parent->right == v && v->parent->parent->left == v->parent);
+            // assert(v->parent->right == v && v->parent->parent->left == v->parent); // hmm
             rotateLeft(v->parent);
             rotateRight(v->parent);
         }
@@ -54,8 +57,10 @@ void rotateLeft(LinkCutTree::TreeNode* p)
     }
 
     if (!p->parent) {
-        v->pathparent = p->pathparent;
-        p->pathparent = nullptr;
+        if (v) {
+            v->pathparent = p->pathparent;
+            p->pathparent = nullptr;
+        }
     }
     else if (p == p->parent->left) {
         p->parent->left = v;
@@ -80,8 +85,10 @@ void rotateRight(LinkCutTree::TreeNode* p)
     }
 
     if (!p->parent) {
-        v->pathparent = p->pathparent;
-        p->pathparent = nullptr;
+        if (v) {
+            v->pathparent = p->pathparent;
+            p->pathparent = nullptr;
+        }
     }
     else if (p == p->parent->left) {
         p->parent->left = v;

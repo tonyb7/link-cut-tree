@@ -82,6 +82,8 @@ bool Graph::generateLevelGraph()
     return vertex_to_level_node.count(target);
 }
 
+// Sources: https://www.cs.cmu.edu/~sleator/papers/dynamic-trees.pdf
+//          https://www.youtube.com/watch?v=HFqO_8Eoc1U
 void Graph::addBlockingFlow() 
 {
     using LinkCutTree::TreeNode;
