@@ -78,6 +78,11 @@ bool Graph::generateLevelGraph()
     return vertex_to_level_node.count(target);
 }
 
+void Graph::findBlockingFlow() 
+{
+    // TODO
+}
+
 void Graph::printLevelGraph() const
 {
     int level = 0;
@@ -110,6 +115,7 @@ void Graph::printLevelGraph() const
     else {
         cout << "The target node (" << target << ") is not in the level graph" << endl;
     }
+    cout << endl;
 
 }
 

@@ -28,6 +28,17 @@ public:
     */
     bool generateLevelGraph();
 
+    /* 
+        Reset the level graph to prepare for the next iteration.
+    */
+    void resetLevelGraph()
+    {vertex_to_level_node.clear();}
+
+    /* 
+        Find a blocking flow in the level graph using the link-cut tree implementation.
+    */
+    void findBlockingFlow();
+
     /*
         Functions to print the state of Graph. 
     */

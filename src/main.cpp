@@ -18,10 +18,21 @@ int main()
         graph.addEdge(u, v, cap);
     }
 
-    // while (graph.generateLevelGraph()) {
-    //     graph.printLevelGraph();
+    cout << "******** INITIAL NETWORK STATE: ********" << endl;
+    graph.printFlow();
 
-    // }
+    int iterations = 0;
+    while (graph.generateLevelGraph()) {
+        cout << "******** ITERATION " << ++iterations << " ********" << endl;
+        graph.printLevelGraph();
+
+        // the man in the house
+        graph.findBlockingFlow();
+
+        cout << "Network state after finding a blocking flow" << endl;
+        graph.printFlow();
+        graph.resetLevelGraph();
+    }
 
     cout << "******** MAXIMUM FLOW RETURNED: ********" << endl;
     graph.printFlow();
