@@ -2,6 +2,7 @@
 #pragma once
 
 #include <memory>
+#include <utility>
 
 class Graph;
 
@@ -39,13 +40,15 @@ namespace LinkCutTree {
     void cut(std::shared_ptr<TreeNode> v);
 
     /*
-        Return the vertex w closest to root(v) such that cost(w, parent(w)) is 
-        minimal among edges on the path from v to root(v). Assumes v is not a tree root.
+        Return (w, parent(w)) where w is the vertex closest to root(v) such that 
+        cost(w, parent(w)) is minimal among edges on the path from v to root(v). 
+        Assumes v is not a tree root.
         
-        We return the vertex closes to root(v) since we might have to consecutively 
+        We return the vertex closest to root(v) since we might have to consecutively 
         call this (when we delete zero-capacity edges along a path).
     */
-    std::shared_ptr<TreeNode> mincost(std::shared_ptr<TreeNode> v, Graph* graph);
+    std::pair<std::shared_ptr<TreeNode>, std::shared_ptr<TreeNode>>
+    mincost(std::shared_ptr<TreeNode> v, Graph* graph);
 
     /*
         Add x to the cost of all edges along the tree path from v to root(v).

@@ -92,7 +92,8 @@ void cut(std::shared_ptr<TreeNode> v)
     v->left = nullptr;
 }
 
-std::shared_ptr<TreeNode> mincost(std::shared_ptr<TreeNode> v, Graph* graph)
+std::pair<std::shared_ptr<TreeNode>, std::shared_ptr<TreeNode>>
+mincost(std::shared_ptr<TreeNode> v, Graph* graph)
 {
     access(v);
 
@@ -101,6 +102,7 @@ std::shared_ptr<TreeNode> mincost(std::shared_ptr<TreeNode> v, Graph* graph)
     root_to_v.push_back(v);
 
     shared_ptr<TreeNode> minNode = nullptr;
+    shared_ptr<TreeNode> minNodeParent = nullptr;
     int minCost = INT_MAX;
     for (int i = 1; i < (int)root_to_v.size(); ++i) {
         shared_ptr<TreeNode> curr = root_to_v[i];
@@ -109,11 +111,12 @@ std::shared_ptr<TreeNode> mincost(std::shared_ptr<TreeNode> v, Graph* graph)
         int cost = graph->getResidual(curr->vertex, parent->vertex);
         if (cost < minCost) {
             minNode = curr;
+            minNodeParent = parent;
             minCost = cost;
         }
     }
 
-    return minNode;
+    return {minNode, minNodeParent};
 }
 
 void update(std::shared_ptr<TreeNode> v, int x, Graph* graph)

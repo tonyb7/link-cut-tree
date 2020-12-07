@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <queue>
+#include <utility>
 
 #include <cassert>
 
@@ -13,6 +14,7 @@ using std::unordered_map;
 using std::unordered_set;
 using std::vector;
 using std::shared_ptr; using std::make_shared;
+using std::pair;
 
 void Graph::addEdge(int u, int v, int capacity)
 {
@@ -97,10 +99,12 @@ void Graph::addBlockingFlow()
             // found a path from source to target
             bool firstTime = true;
             while (true) {
-                shared_ptr<TreeNode> w = LinkCutTree::mincost(s, this); // find the mincost along this path
+                // find the mincost along this path
+                pair<shared_ptr<TreeNode>, shared_ptr<TreeNode>> w_and_parent = LinkCutTree::mincost(s, this);
+                int w_vertex = w_and_parent.first->vertex;
+                int w_parent = w_and_parent.second->vertex;
 
-                assert(w->parent);
-                int edge_idx = adj.at(w->vertex).at(w->parent->vertex);
+                int edge_idx = adj.at(w_vertex).at(w_parent);
                 const Edge& e = edges.at(edge_idx);
                 int cost = e.residual;
 
@@ -116,9 +120,12 @@ void Graph::addBlockingFlow()
                 }
                 else {
                     // delete all edges that acquired cost==0
-                    LinkCutTree::cut(w);
+                    LinkCutTree::cut(w_and_parent.first);
                     vertex_to_level_node[e.u]->outgoing_vertices.erase(e.v);
                     vertex_to_level_node[e.v]->incoming_vertices.erase(e.u);
+                    if (w_vertex == source) {
+                        break;
+                    }
                 }
             }
         }

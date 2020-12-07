@@ -30,6 +30,7 @@ int main()
         // and add it to the total flow.
         graph.addBlockingFlow();
 
+        cout << endl;
         cout << "Network state after finding a blocking flow" << endl;
         graph.printFlow();
         graph.resetLevelGraph();
