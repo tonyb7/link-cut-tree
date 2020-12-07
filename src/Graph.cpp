@@ -95,7 +95,7 @@ void Graph::addBlockingFlow()
             // found a path from source to target
             bool firstTime = true;
             while (true) {
-                TreeNode * w = LinkCutTree::mincost(&s); // find the mincost along this path
+                TreeNode * w = LinkCutTree::mincost(&s, this); // find the mincost along this path
 
                 assert(w->parent);
                 int edge_idx = adj.at(w->vertex).at(w->parent->vertex);
@@ -104,7 +104,7 @@ void Graph::addBlockingFlow()
 
                 if (firstTime) {
                     firstTime = false;
-                    LinkCutTree::update(&s, 0 - cost); // add mincost to blocking flow
+                    LinkCutTree::update(&s, 0 - cost, this); // add mincost to blocking flow
                     cost = 0;
                 }
 
@@ -150,6 +150,23 @@ void Graph::addBlockingFlow()
 
     }
 
+}
+
+void Graph::addFlow(int u, int v, int c) 
+{
+    cout << "Adding " << c << " units of flow to (" << u << ", " << v << ")" << endl;
+
+    Edge& edge = edges[adj.at(u).at(v)];
+    Edge& redge = edges[adj.at(v).at(u)];
+
+    edge.flow += c;
+    redge.flow -= c;
+
+    assert(edge.flow < edge.capacity);
+    assert(redge.flow < redge.capacity);
+
+    edge.residual = edge.capacity - edge.flow;
+    redge.residual = redge.capacity - redge.flow;
 }
 
 void Graph::printLevelGraph() const

@@ -1,6 +1,8 @@
 
 #pragma once
 
+class Graph;
+
 namespace LinkCutTree {
 
     struct TreeNode {
@@ -41,12 +43,12 @@ namespace LinkCutTree {
         We return the vertex closes to root(v) since we might have to consecutively 
         call this (when we delete zero-capacity edges along a path).
     */
-    TreeNode* mincost(TreeNode* v);
+    TreeNode* mincost(TreeNode* v, Graph* graph);
 
     /*
         Add x to the cost of all edges along the tree path from v to root(v).
     */
-    void update(TreeNode* v, int x);
+    void update(TreeNode* v, int x, Graph* graph);
 
 }
 

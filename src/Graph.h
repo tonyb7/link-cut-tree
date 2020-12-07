@@ -43,6 +43,17 @@ public:
     */
     void addBlockingFlow();
 
+    /* 
+        Return the residual on (u, v)
+    */
+    int getResidual(int u, int v) const
+    {return edges[adj.at(u).at(v)].residual;}
+
+    /* 
+        Add c units to flow to (u, v)
+    */
+    void addFlow(int u, int v, int c);
+
     /*
         Functions to print the state of Graph. 
     */
